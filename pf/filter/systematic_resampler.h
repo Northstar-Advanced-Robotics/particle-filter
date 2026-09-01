@@ -13,6 +13,7 @@
 #include <concepts>
 #include <cstddef>
 #include <cstdint>
+#include <cuda/std/algorithm>
 #include <cuda/std/tuple>
 #include <limits>
 #include <type_traits>
@@ -41,7 +42,7 @@ struct truncated_representation {
     const auto c = truncated_representation<T>::from_value(a.partial_component() + b.partial_component());
     const T integral_component = a.integral_component() + b.integral_component() + c.integral_component();
     const float partial_component = c.partial_component();
-    return truncated_representation<T>{thrust::min(bound, integral_component), partial_component};
+    return truncated_representation<T>{cuda::std::min(bound, integral_component), partial_component};
   }
 
   PF_TARGET_ATTRS [[nodiscard]] static constexpr truncated_representation<T> from_integral(const T& value) noexcept {
